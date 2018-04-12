@@ -3,6 +3,7 @@
 export(aggrStats)
 export(calcPlateQuality)
 export(calcPlateStats)
+export(freadCSV2lineHeader)
 export(plotDens)
 export(plotDoseResp)
 export(plotPlateHeatMap)
