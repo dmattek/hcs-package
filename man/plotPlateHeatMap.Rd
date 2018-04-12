@@ -28,7 +28,7 @@ plotPlateHeatMap(in.dt, in.meas, in.well, in.meas.min = NULL,
 \item{in.wells.untr}{String vector with names of untreated wells (default 'NULL'). If provided, grey borders are drawn around those wells.}
 }
 \value{
-ggplot2 plot
+ggplot2 object plot
 }
 \description{
 Plots a heatmap of a chosen measured quantity. Colour scaling assigns blue gradient for negative numbers, white for zero, red gradient for positive values.

@@ -3,6 +3,8 @@
 export(aggrStats)
 export(calcPlateQuality)
 export(calcPlateStats)
+export(plotDens)
+export(plotDoseResp)
 export(plotPlateHeatMap)
 export(remOutliers)
 import(data.table)

@@ -12,7 +12,7 @@
 #' @param in.wells.pos String vector with names of wells with positive controls (default 'NULL'). If provided, green borders are drawn around those wells.
 #' @param in.wells.untr String vector with names of untreated wells (default 'NULL'). If provided, grey borders are drawn around those wells.
 #'
-#' @return ggplot2 plot
+#' @return ggplot2 object plot
 #' @export
 #' @import data.table
 #' @import ggplot2
