@@ -4,7 +4,7 @@
 \alias{plotDens}
 \title{Density plot of a quantity}
 \usage{
-plotDens(in.dt, in.meas, in.facet = "Concentration + Compound",
+plotDens(in.dt, in.meas, in.group = NULL, in.facet = NULL,
   in.vline = NULL, in.bdepth = NULL,
   in.xlab = "\\nlog10 mean fl.int. per cell (nucleus + cytosol)")
 }

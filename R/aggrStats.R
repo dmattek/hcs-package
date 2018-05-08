@@ -7,6 +7,7 @@
 #' @param in.col String with the column name in the data table from which the stats should be calculated.
 #' @param in.bycol String with the column name for grouping (optional).
 #' @param in.cilevel Number between 0 an 1 with confidence level for t-test (optional), If not provided CIs won't be calculated.
+#' @param in.rob Whether robust stats should be calculated instead
 #'
 #' @return Data Table with aggregaed statistics.
 #' @export
@@ -20,31 +21,42 @@
 #'
 #' # aggregation within groups with CI
 #' dt.aggr.gr = aggrStats(dt, 'x', 'gr', 0.95)
-aggrStats = function(in.dt, in.col, in.bycol = NULL, in.cilevel = NULL) {
+aggrStats = function(in.dt, in.col, in.bycol = NULL, in.cilevel = NULL, in.rob = F) {
 
-  if (!is.null(in.cilevel)) {
-    loc.dt  = in.dt[, .(coltmp1 = .N,
-                        coltmp2 = mean(get(in.col)),
-                        coltmp3 = sd(get(in.col)),
-                        coltmp4 = sapply(.SD, function(x) {loc.res = t.test(x, alternative = 'two.sided'); return(loc.res$conf.int[1])}),
-                        coltmp5 = sapply(.SD, function(x) {loc.res = t.test(x, alternative = 'two.sided'); return(loc.res$conf.int[2])})), by = in.bycol, .SDcols = in.col]
+  if (in.rob) {
+      loc.dt  = in.dt[, .(coltmp1 = .N,
+                          coltmp2 = median(get(in.col)),
+                          coltmp3 = mad(get(in.col))), by = in.bycol]
 
-    setnames(loc.dt, c(in.bycol,
-                       paste0(in.col, '.ncells'),
-                       paste0(in.col, '.mn'),
-                       paste0(in.col, '.sd'),
-                       paste0(in.col, '.CIlo'),
-                       paste0(in.col, '.CIhi')))
-
+      setnames(loc.dt, c(in.bycol,
+                         paste0(in.col, '.ncells'),
+                         paste0(in.col, '.md'),
+                         paste0(in.col, '.mad')))
   } else {
-    loc.dt  = in.dt[, .(coltmp1 = .N,
-                        coltmp2 = mean(get(in.col)),
-                        coltmp3 = sd(get(in.col))), by = in.bycol]
+    if (!is.null(in.cilevel)) {
+      loc.dt  = in.dt[, .(coltmp1 = .N,
+                          coltmp2 = mean(get(in.col)),
+                          coltmp3 = sd(get(in.col)),
+                          coltmp4 = sapply(.SD, function(x) {loc.res = t.test(x, alternative = 'two.sided'); return(loc.res$conf.int[1])}),
+                          coltmp5 = sapply(.SD, function(x) {loc.res = t.test(x, alternative = 'two.sided'); return(loc.res$conf.int[2])})), by = in.bycol, .SDcols = in.col]
 
-    setnames(loc.dt, c(in.bycol,
-                       paste0(in.col, '.ncells'),
-                       paste0(in.col, '.mn'),
-                       paste0(in.col, '.sd')))
+      setnames(loc.dt, c(in.bycol,
+                         paste0(in.col, '.ncells'),
+                         paste0(in.col, '.mn'),
+                         paste0(in.col, '.sd'),
+                         paste0(in.col, '.CIlo'),
+                         paste0(in.col, '.CIhi')))
+
+    } else {
+      loc.dt  = in.dt[, .(coltmp1 = .N,
+                          coltmp2 = mean(get(in.col)),
+                          coltmp3 = sd(get(in.col))), by = in.bycol]
+
+      setnames(loc.dt, c(in.bycol,
+                         paste0(in.col, '.ncells'),
+                         paste0(in.col, '.mn'),
+                         paste0(in.col, '.sd')))
+    }
   }
 
 

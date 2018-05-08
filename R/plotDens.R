@@ -16,14 +16,22 @@
 #' @examples
 
 plotDens = function(in.dt,
-                      in.meas,
-                      in.facet = "Concentration + Compound",
-                      in.vline = NULL,
-                      in.bdepth = NULL,
-                      in.xlab = "\nlog10 mean fl.int. per cell (nucleus + cytosol)") {
+                    in.meas,
+                    in.group = NULL,
+                    in.facet = NULL,
+                    in.vline = NULL,
+                    in.bdepth = NULL,
+                    in.xlab = "\nlog10 mean fl.int. per cell (nucleus + cytosol)") {
 
-  loc.p = ggplot(in.dt, aes_string(in.meas)) +
-    geom_density()
+  loc.p = ggplot(in.dt, aes_string(in.meas))
+
+  if (is.null(in.group))
+    loc.p = loc.p +
+      geom_density()
+  else
+    loc.p = loc.p +
+      geom_density(aes_string(color = in.group))
+
 
   if (!is.null(in.vline) | !is.null(in.bdepth)) {
     if(in.meas %like% 'log10') {
@@ -37,8 +45,13 @@ plotDens = function(in.dt,
     }
   }
 
+  if (!is.null(in.facet))
+    loc.p = loc.p +
+      facet_wrap(as.formula(paste("~", in.facet)))
+
+
+
   loc.p = loc.p +
-    facet_wrap(as.formula(paste("~", in.facet))) +
     xlab(in.xlab) +
     ylab("Density\n") +
     theme_bw(base_size = 14, base_family = "Helvetica") +

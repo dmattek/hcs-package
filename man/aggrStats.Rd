@@ -4,7 +4,7 @@
 \alias{aggrStats}
 \title{Aggregate statistics}
 \usage{
-aggrStats(in.dt, in.col, in.bycol = NULL, in.cilevel = NULL)
+aggrStats(in.dt, in.col, in.bycol = NULL, in.cilevel = NULL, in.rob = F)
 }
 \arguments{
 \item{in.dt}{Input data table. Should contain at least one numeric column.}
@@ -14,6 +14,8 @@ aggrStats(in.dt, in.col, in.bycol = NULL, in.cilevel = NULL)
 \item{in.bycol}{String with the column name for grouping (optional).}
 
 \item{in.cilevel}{Number between 0 an 1 with confidence level for t-test (optional), If not provided CIs won't be calculated.}
+
+\item{in.rob}{Whether robust stats should be calculated instead}
 }
 \value{
 Data Table with aggregaed statistics.
