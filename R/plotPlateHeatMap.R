@@ -51,16 +51,31 @@ plotPlateHeatMap = function(in.dt,
   else
     loc.max = in.meas.max
 
+  if ((loc.min < 0) & (loc.max > 0))
+    loc.med = 0
+  else if (loc.max < 0)
+    loc.med = 0.5*(loc.min - loc.max)
+  else
+    loc.med = 0.5*(loc.max - loc.min)
+
+
+
   loc.p = ggplot(loc.dt,
                  aes(x = as.factor(Image_Metadata_Col), y = Image_Metadata_Row)) +
-    geom_raster(aes_string(fill = in.meas))  +
+    geom_raster(aes_string(fill = in.meas))
+
+  loc.p = loc.p +
     scale_fill_gradientn(
       name = in.title.scale,
       colours = c("blue", "white", "red"),
       limits = c(loc.min, loc.max),
-      values = rescale(c(loc.min, 0, loc.max)),
+      values = rescale(c(loc.min, loc.med, loc.max)),
       na.value = 'grey50'
-    ) +
+    )
+
+
+
+  loc.p = loc.p +
     scale_y_discrete(limits = rev(unique(loc.dt$Image_Metadata_Row))) +
     xlab("Plate column") +
     ylab("Plate row\n") +
