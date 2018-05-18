@@ -41,19 +41,34 @@ plotDoseRespViol = function(in.dt,
                             in.ylim = NULL,
                             in.xlab = NULL,
                             in.ylab = NULL,
+                            in.xtickbreaks = NULL,
+                            in.xticklabels = NULL,
                             ...) {
 
   p.out = ggplot(in.dt, aes_string(x = sprintf("as.factor(%s)", in.xvar), y = in.yvar))
 
-  p.out = p.out + geom_violin(aes_string(fill = in.group.col), scale = 'width', ...)
+  if (!is.null(in.group.col))
+    p.out = p.out +
+      geom_violin(aes_string(fill = sprintf("as.factor(%s)", in.group.col)), scale = 'width', ...)
+  else
+    p.out = p.out +
+      geom_violin(fill = 'grey80', scale = 'width', ...)
 
   if (!is.null(in.ylim))
     p.out = p.out +
-    coord_cartesian(ylim = in.ylim)
+      coord_cartesian(ylim = in.ylim)
+
+  if (!is.null(in.facet))
+    p.out = p.out +
+      facet_grid(as.formula(in.facet), scales = "free_x", space = "free_x")
+
+  if (!is.null(in.xtickbreaks) & !(is.null(in.xticklabels)))
+    p.out = p.out +
+      scale_x_discrete(limits = in.xtickbreaks, labels = in.xticklabels)
+
 
   p.out = p.out +
     scale_fill_discrete(name = '') +
-    facet_grid(as.formula(paste("~", in.facet)), scales = "free_x", space = "free_x") +
     xlab(in.xlab) +
     ylab(in.ylab) +
     theme_bw(base_size = 18, base_family = "Helvetica") +
@@ -65,7 +80,7 @@ plotDoseRespViol = function(in.dt,
           axis.text.x = element_text(size=12, angle = 45, hjust = 1),
           axis.text.y = element_text(size=12),
           strip.text.x = element_text(size=14, face="bold"),
-          strip.text.y = element_text(size=14, face="bold"),
+          strip.text.y = element_text(size=14, face="bold", angle = 0),
           strip.background = element_blank(),
           legend.key = element_blank(),
           legend.key.height = unit(2, "lines"),

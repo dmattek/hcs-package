@@ -5,7 +5,8 @@
 \title{Plot single-cell dose response as violin plots}
 \usage{
 plotDoseRespViol(in.dt, in.xvar, in.yvar, in.group.col = NULL,
-  in.facet = NULL, in.ylim = NULL, in.xlab = NULL, in.ylab = NULL, ...)
+  in.facet = NULL, in.ylim = NULL, in.xlab = NULL, in.ylab = NULL,
+  in.xtickbreaks = NULL, in.xticklabels = NULL, ...)
 }
 \arguments{
 \item{in.dt}{Input data table. Should contain at least two numeric columns, and one vategorical variable.}

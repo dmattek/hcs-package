@@ -4,10 +4,9 @@
 \alias{plotDoseRespDot}
 \title{Plot dose response}
 \usage{
-plotDoseRespDot(in.dt, in.xvar = "Concentration.num",
-  in.yvar = "cytoNuc.mean", in.group = "Compound", in.facet = "Compound",
-  in.xlab = "\\nConcentration (GDC0941 uM; Trametinib nM)",
-  in.ylab = "cytoplasmic / nuclear Foxo activity\\n", ...)
+plotDoseRespDot(in.dt, in.xvar, in.yvar, in.group = NULL,
+  in.group.col = NULL, in.facet = NULL, in.ylim = NULL, in.xlab = NULL,
+  in.ylab = NULL, in.xtickbreaks = NULL, in.xticklabels = NULL, ...)
 }
 \arguments{
 \item{in.dt}{Input data table. Should contain at least two numeric columns, and one vategorical variable.}
