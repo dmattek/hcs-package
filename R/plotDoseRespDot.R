@@ -68,19 +68,19 @@ plotDoseRespDot = function(in.dt,
     p.out = p.out +
       scale_x_discrete(limits = in.xtickbreaks, labels = in.xticklabels)
 
-
-  # stat_summary(aes_string(y = in.yvar, group = in.group),
-  #              fun.y = median,
-  #              colour = "red",
-  #              linetype = 'solid',
-  #              geom = "line",
-  #              size= 1) +
-  # stat_summary(data = in.dt[get(in.xvar) == 0], aes_string(y = in.yvar, group = in.group),
-  #              fun.y = median,
-  #              colour = "red",
-  #              size = 5,
-  #              geom = "point",
-  #              shape = 10) +
+  p.out = p.out +
+  stat_summary(aes_string(y = in.yvar, group = in.group),
+               fun.y = median,
+               colour = "red",
+               linetype = 'solid',
+               geom = "line",
+               size= 1) +
+  stat_summary(data = in.dt[get(in.xvar) == 0], aes_string(y = in.yvar, group = in.group),
+               fun.y = median,
+               colour = "red",
+               size = 5,
+               geom = "point",
+               shape = 10)
 
   p.out = p.out +
     scale_fill_discrete(name = '') +
