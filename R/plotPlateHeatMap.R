@@ -25,14 +25,14 @@
 #' plotPlateHeatMap(dt, 'npi', 'well', -1.2, +1.2, 'NPI', 'B01', 'C03', 'A02')
 
 plotPlateHeatMap = function(in.dt,
-                            in.meas,
-                            in.well,
-                            in.meas.min = NULL,
-                            in.meas.max = NULL,
-                            in.title.scale = '',
-                            in.wells.neg = NULL,
-                            in.wells.pos = NULL,
-                            in.wells.untr = NULL) {
+                              in.meas,
+                              in.well,
+                              in.meas.min = NULL,
+                              in.meas.max = NULL,
+                              in.title.scale = '',
+                              in.wells.neg = NULL,
+                              in.wells.pos = NULL,
+                              in.wells.untr = NULL) {
 
   loc.dt = copy(in.dt)
 
@@ -51,12 +51,15 @@ plotPlateHeatMap = function(in.dt,
   else
     loc.max = in.meas.max
 
+  if (loc.min > loc.max)
+    stop(sprintf("Min/max bounds incorrect! min=%f max=%f", loc.min, loc.max))
+
   if ((loc.min < 0) & (loc.max > 0))
     loc.med = 0
   else if (loc.max < 0)
     loc.med = 0.5*(loc.min - loc.max)
   else
-    loc.med = 0.5*(loc.max - loc.min)
+    loc.med = 0.5*(loc.min + loc.max)
 
 
 
