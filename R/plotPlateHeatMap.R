@@ -25,20 +25,20 @@
 #' plotPlateHeatMap(dt, 'npi', 'well', -1.2, +1.2, 'NPI', 'B01', 'C03', 'A02')
 
 plotPlateHeatMap = function(in.dt,
-                              in.meas,
-                              in.well,
-                              in.meas.min = NULL,
-                              in.meas.max = NULL,
-                              in.title.scale = '',
-                              in.wells.neg = NULL,
-                              in.wells.pos = NULL,
-                              in.wells.untr = NULL) {
+                               in.meas,
+                               in.well,
+                               in.meas.min = NULL,
+                               in.meas.max = NULL,
+                               in.title.scale = '',
+                               in.wells.neg = NULL,
+                               in.wells.pos = NULL,
+                               in.wells.untr = NULL) {
 
   loc.dt = copy(in.dt)
 
   # extract column and row names from well names
-  loc.dt[, Image_Metadata_Row := gsub('[0-9]+', '', get(in.well))]
-  loc.dt[, Image_Metadata_Col := as.numeric(gsub('[A-Z]{1}', '', get(in.well)))]
+  loc.dt[, col.tmp.row := gsub('[0-9]+', '', get(in.well))]
+  loc.dt[, col.tmp.col := as.numeric(gsub('[A-Z]{1}', '', get(in.well)))]
 
   # min & max of meas col
   if(is.null(in.meas.min))
@@ -64,7 +64,7 @@ plotPlateHeatMap = function(in.dt,
 
 
   loc.p = ggplot(loc.dt,
-                 aes(x = as.factor(Image_Metadata_Col), y = Image_Metadata_Row)) +
+                 aes(x = as.factor(col.tmp.col), y = col.tmp.row)) +
     geom_raster(aes_string(fill = in.meas))
 
   loc.p = loc.p +
@@ -79,7 +79,7 @@ plotPlateHeatMap = function(in.dt,
 
 
   loc.p = loc.p +
-    scale_y_discrete(limits = rev(unique(loc.dt$Image_Metadata_Row))) +
+    scale_y_discrete(limits = rev(unique(loc.dt$col.tmp.row))) +
     xlab("Plate column") +
     ylab("Plate row\n") +
     theme_grey(base_size = 18, base_family = "Helvetica") +
@@ -103,10 +103,11 @@ plotPlateHeatMap = function(in.dt,
 
 
   if(!is.null(in.wells.neg)) {
-    loc.n.platerows = length(unique(loc.dt$Image_Metadata_Row))
+    loc.n.platerows = length(unique(loc.dt$col.tmp.row))
+
     loc.ctrl.neg = data.table(
-      Image_Metadata_Row = abs(seq(1, length(LETTERS), 1)[LETTERS %in% gsub('{1}[0-9]*', '', in.wells.neg)] - loc.n.platerows - 1),
-      Image_Metadata_Col = as.integer(gsub('[A-Z]*', '', in.wells.neg)),
+      col.tmp.row = abs(match(gsub('{1}[0-9]*', '', in.wells.neg), LETTERS) - loc.n.platerows - 1),
+      col.tmp.col = as.integer(gsub('[A-Z]*', '', in.wells.neg)),
       npi = 0
     )
 
@@ -117,19 +118,19 @@ plotPlateHeatMap = function(in.dt,
         fill = NA,
         colour = "yellow",
         aes(
-          xmin = Image_Metadata_Col - 0.5,
-          xmax = Image_Metadata_Col + 0.5,
-          ymin = Image_Metadata_Row - 0.5,
-          ymax = Image_Metadata_Row + 0.5
+          xmin = col.tmp.col - 0.5,
+          xmax = col.tmp.col + 0.5,
+          ymin = col.tmp.row - 0.5,
+          ymax = col.tmp.row + 0.5
         )
       )
   }
 
   if(!is.null(in.wells.pos)) {
-    loc.n.platerows = length(unique(loc.dt$Image_Metadata_Row))
+    loc.n.platerows = length(unique(loc.dt$col.tmp.row))
     loc.ctrl.pos = data.table(
-      Image_Metadata_Row = abs(seq(1, length(LETTERS), 1)[LETTERS %in% gsub('{1}[0-9]*', '', in.wells.pos)] - loc.n.platerows - 1),
-      Image_Metadata_Col = as.integer(gsub('[A-Z]*', '', in.wells.pos)),
+      col.tmp.row = abs(match(gsub('{1}[0-9]*', '', in.wells.pos), LETTERS) - loc.n.platerows - 1),
+      col.tmp.col = as.integer(gsub('[A-Z]*', '', in.wells.pos)),
       npi = 0
     )
 
@@ -140,19 +141,19 @@ plotPlateHeatMap = function(in.dt,
         fill = NA,
         colour = "green",
         aes(
-          xmin = Image_Metadata_Col - 0.5,
-          xmax = Image_Metadata_Col + 0.5,
-          ymin = Image_Metadata_Row - 0.5,
-          ymax = Image_Metadata_Row + 0.5
+          xmin = col.tmp.col - 0.5,
+          xmax = col.tmp.col + 0.5,
+          ymin = col.tmp.row - 0.5,
+          ymax = col.tmp.row + 0.5
         )
       )
   }
 
   if(!is.null(in.wells.untr)) {
-    loc.n.platerows = length(unique(loc.dt$Image_Metadata_Row))
+    loc.n.platerows = length(unique(loc.dt$col.tmp.row))
     loc.ctrl.untr = data.table(
-      Image_Metadata_Row = abs(seq(1, length(LETTERS), 1)[LETTERS %in% gsub('{1}[0-9]*', '', in.wells.untr)] - loc.n.platerows - 1),
-      Image_Metadata_Col = as.integer(gsub('[A-Z]*', '', in.wells.untr)),
+      col.tmp.row = abs(match(gsub('{1}[0-9]*', '', in.wells.untr), LETTERS) - loc.n.platerows - 1),
+      col.tmp.col = as.integer(gsub('[A-Z]*', '', in.wells.untr)),
       npi = 0
     )
 
@@ -163,10 +164,10 @@ plotPlateHeatMap = function(in.dt,
         fill = NA,
         colour = "grey50",
         aes(
-          xmin = Image_Metadata_Col - 0.5,
-          xmax = Image_Metadata_Col + 0.5,
-          ymin = Image_Metadata_Row - 0.5,
-          ymax = Image_Metadata_Row + 0.5
+          xmin = col.tmp.col - 0.5,
+          xmax = col.tmp.col + 0.5,
+          ymin = col.tmp.row - 0.5,
+          ymax = col.tmp.row + 0.5
         )
       )
   }
