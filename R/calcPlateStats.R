@@ -9,6 +9,7 @@
 #' @param in.col.meas Numeric column with measurement.
 #' @param in.wells.neg Names of wells with negative controls (e.g. 'A01', 'A02').
 #' @param in.wells.pos Names of wells with positive controls (e.g. 'A01', 'A02').
+#' @param in.wells.untr Names of untreated wells (e.g. 'A01', 'A02'). Default, NULL. If not NULL, untreated wells will be excluded from mean and sd for z-score calculation.
 #'
 #' @return Data table with same columns as original but with columns \code{npi} and \code{zscore} added.
 #' @export
@@ -20,7 +21,7 @@
 #'                 x = rnorm(9))
 #' calcPlateStats(dt, 'x', 'well', 'B01', 'C03')
 
-calcPlateStats = function(in.dt, in.col.meas, in.col.well, in.wells.neg, in.wells.pos) {
+calcPlateStats = function(in.dt, in.col.meas, in.col.well, in.wells.neg, in.wells.pos, in.wells.untr = NULL) {
 
   loc.dt = copy(in.dt)
 
@@ -31,8 +32,13 @@ calcPlateStats = function(in.dt, in.col.meas, in.col.well, in.wells.neg, in.well
   loc.dt[, npi := (loc.pos.mn - get(in.col.meas)) / (loc.pos.mn - loc.neg.mn)]
 
   # calculate Z-score
-  loc.plate.mn = mean(loc.dt[!(get(in.col.well) %in% c(in.wells.neg, in.wells.pos)), get(in.col.meas)])
-  loc.plate.sd =   sd(loc.dt[!(get(in.col.well) %in% c(in.wells.neg, in.wells.pos)), get(in.col.meas)])
+  if (is.null(in.wells.untr))
+    loc.wells.excl = c(in.wells.neg, in.wells.pos)
+  else
+    loc.wells.excl = c(in.wells.neg, in.wells.pos, in.wells.untr)
+
+  loc.plate.mn = mean(loc.dt[!(get(in.col.well) %in% loc.wells.excl), get(in.col.meas)])
+  loc.plate.sd =   sd(loc.dt[!(get(in.col.well) %in% loc.wells.excl), get(in.col.meas)])
 
   loc.dt[, zscore := (get(in.col.meas) - loc.plate.mn) / loc.plate.sd]
 
