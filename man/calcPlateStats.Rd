@@ -4,7 +4,8 @@
 \alias{calcPlateStats}
 \title{Calculate plate statistics}
 \usage{
-calcPlateStats(in.dt, in.col.meas, in.col.well, in.wells.neg, in.wells.pos)
+calcPlateStats(in.dt, in.col.meas, in.col.well, in.wells.neg, in.wells.pos,
+  in.wells.untr = NULL)
 }
 \arguments{
 \item{in.dt}{Input data table with aggregate, per well values. Should contain:
@@ -18,6 +19,8 @@ string vector with names of negative control wells, string vector with names of 
 \item{in.wells.neg}{Names of wells with negative controls (e.g. 'A01', 'A02').}
 
 \item{in.wells.pos}{Names of wells with positive controls (e.g. 'A01', 'A02').}
+
+\item{in.wells.untr}{Names of untreated wells (e.g. 'A01', 'A02'). Default, NULL. If not NULL, untreated wells will be excluded from mean and sd for z-score calculation.}
 }
 \value{
 Data table with same columns as original but with columns \code{npi} and \code{zscore} added.

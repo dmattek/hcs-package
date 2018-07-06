@@ -2,6 +2,7 @@
 
 export(aggrStats)
 export(calcPlateQuality)
+export(calcPlateQuality2)
 export(calcPlateStats)
 export(freadCSV2lineHeader)
 export(placeLevel1st)

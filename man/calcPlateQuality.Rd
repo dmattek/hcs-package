@@ -12,12 +12,12 @@ calcPlateQuality(in.dt, in.col.meas, in.col.type, in.well.type,
 Has to consist of at least 2 columns: value of the measurement in a well,
 description of well types (e.g.\code{'CTRL neg'}, \code{'CTRL pos'}, \code{'Compounds'}.)}
 
-\item{in.col.meas}{String with column name of the measurement}
+\item{in.col.meas}{Name of the column holding the measurement}
 
-\item{in.col.type}{String with column name of the well type}
+\item{in.col.type}{Name of the column holding the well type}
 
 \item{in.well.type}{Named list with strings that describe wells
-with negaitve and positive controls, and compounds. The list has to have the following
+with negative and positive controls, and compounds. The list has to have the following
 names of elements: \code{list(ctrl.neg = 'CTRL neg', ctrl.pos = 'CTRL pos', compounds = 'Compounds')}}
 
 \item{in.screen}{String with either of \code{c('activation', 'inhibition')}}
