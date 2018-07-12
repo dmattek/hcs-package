@@ -32,7 +32,7 @@ plotPlateHeatMap = function(in.dt,
                                in.title.scale = '',
                                in.wells.neg = NULL,
                                in.wells.pos = NULL,
-                               in.wells.untr = NULL) {
+                               in.wells.untr = NULL, ...) {
 
   loc.dt = copy(in.dt)
 
@@ -64,7 +64,7 @@ plotPlateHeatMap = function(in.dt,
 
 
   loc.p = ggplot(loc.dt,
-                 aes(x = as.factor(col.tmp.col), y = col.tmp.row)) +
+                 aes_string(x = 'as.factor(col.tmp.col)', y = 'col.tmp.row', ...)) +
     geom_raster(aes_string(fill = in.meas))
 
   loc.p = loc.p +

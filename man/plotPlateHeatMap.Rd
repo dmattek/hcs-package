@@ -6,7 +6,7 @@
 \usage{
 plotPlateHeatMap(in.dt, in.meas, in.well, in.meas.min = NULL,
   in.meas.max = NULL, in.title.scale = "", in.wells.neg = NULL,
-  in.wells.pos = NULL, in.wells.untr = NULL)
+  in.wells.pos = NULL, in.wells.untr = NULL, ...)
 }
 \arguments{
 \item{in.dt}{Input data table. Should contain at least two columns: well names (e.g. 'A01', 'C03'), measurment values.}
