@@ -5,7 +5,7 @@
 \title{Calculate plate quality}
 \usage{
 calcPlateQuality2(in.dt, in.col.meas, in.col.well, in.wells.neg, in.wells.pos,
-  in.wells.untr = NULL, in.screen = c("activation", "inhibition"))
+  in.wells.excl = NULL, in.screen = c("activation", "inhibition"))
 }
 \arguments{
 \item{in.dt}{Input data table. Rows correspond to well measurements.
@@ -19,12 +19,12 @@ Has to consist of at least 2 columns: value of the measurement in a well, and we
 
 \item{in.wells.pos}{String vector with well names of the positive control}
 
-\item{in.wells.untr}{String vector with well names of untreated wells; default NULL}
+\item{in.wells.excl}{String vector with additional (to neg and pos controls) well names to exclude from calculation of plate stats (mean, sd, etc); for example, untreated wells would typically be excluded. Default NULL}
 
 \item{in.screen}{String with either of \code{c('activation', 'inhibition')}}
 }
 \value{
-List with two items, \code{zfactor} and \code{zprime}
+List with two items, plate and control stats, \code{zfactor}, and \code{zprime}
 }
 \description{
 Calculates z-factor and z-prime of a measurment. Requires the actual measurment,

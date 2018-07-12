@@ -10,10 +10,10 @@
 #' @param in.col.well Name of the column holding well name
 #' @param in.wells.neg String vector with well names of the negative control
 #' @param in.wells.pos String vector with well names of the positive control
-#' @param in.wells.untr String vector with well names of untreated wells; default NULL
+#' @param in.wells.excl String vector with additional (to neg and pos controls) well names to exclude from calculation of plate stats (mean, sd, etc); for example, untreated wells would typically be excluded. Default NULL
 #' @param in.screen String with either of \code{c('activation', 'inhibition')}
 #'
-#' @return List with two items, \code{zfactor} and \code{zprime}
+#' @return List with two items, plate and control stats, \code{zfactor}, and \code{zprime}
 #' @export
 #' @import data.table
 #'
@@ -26,22 +26,27 @@
 #'
 
 calcPlateQuality2 = function(in.dt,
-                             in.col.meas,
-                             in.col.well,
-                             in.wells.neg, in.wells.pos, in.wells.untr = NULL,
-                             in.screen = c('activation', 'inhibition')) {
+                               in.col.meas,
+                               in.col.well,
+                               in.wells.neg, in.wells.pos, in.wells.excl = NULL,
+                               in.screen = c('activation', 'inhibition')) {
 
   in.screen = match.arg(in.screen)
 
-  # create a list of wells to exclude from calculation of which mean and sd
-  # can consist of neg and pos ctrl,
+  # create a list of wells to exclude from calculation of plate mean and sd
+  # exlcuded wells consist of neg and pos ctrl,
   # and untreated if in.wells.untr not NULL
-  if (is.null(in.wells.untr))
+  if (is.null(in.wells.excl))
     loc.wells.excl = c(in.wells.neg, in.wells.pos)
   else
-    loc.wells.excl = c(in.wells.neg, in.wells.pos, in.wells.untr)
+    loc.wells.excl = c(in.wells.neg, in.wells.pos, in.wells.excl)
 
   loc.l = list()
+
+  # loc.l$wells.neg  = in.wells.neg
+  # loc.l$wells.pos  = in.wells.pos
+  # loc.l$wells.excl = loc.wells.excl
+
 
   loc.l$sample.mn = mean(in.dt[!(get(in.col.well) %in% loc.wells.excl), get(in.col.meas)])
   loc.l$sample.sd = sd(in.dt[!(get(in.col.well) %in% loc.wells.excl), get(in.col.meas)])
